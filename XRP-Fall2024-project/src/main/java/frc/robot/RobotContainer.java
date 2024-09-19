@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.fasterxml.jackson.databind.introspect.WithMember;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -18,6 +20,9 @@ import edu.wpi.first.wpilibj.xrp.XRPOnBoardIO;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -71,6 +76,21 @@ public class RobotContainer {
     joystickBButton
         .onTrue(new InstantCommand(() -> m_arm.setAngle(90.0), m_arm))
         .onFalse(new InstantCommand(() -> m_arm.setAngle(0.0), m_arm));
+    
+    JoystickButton xButton = new JoystickButton(m_controller, 3);
+    xButton
+        .onTrue(new InstantCommand(() -> m_drivetrain.speedToggle(0.4), m_drivetrain));
+      
+    JoystickButton yButton = new JoystickButton(m_controller, 4);
+    yButton
+        .onTrue(new InstantCommand(() -> m_drivetrain.speedToggle(1), m_drivetrain));
+    
+    JoystickButton lb = new JoystickButton(m_controller, 5);
+
+    JoystickButton rb = new JoystickButton(m_controller, 6);
+    rb
+        .onTrue(new InstantCommand(() ->  m_drivetrain.rightInvertion(), m_drivetrain));
+
 
     // Setup SmartDashboard options
     m_chooser.setDefaultOption("Auto Routine Distance", new AutonomousDistance(m_drivetrain));
@@ -94,6 +114,6 @@ public class RobotContainer {
    */
   public Command getArcadeDriveCommand() {
     return new ArcadeDrive(
-        m_drivetrain, () -> -m_controller.getRawAxis(1), () -> -m_controller.getRawAxis(5));
+        m_drivetrain, () -> -m_controller.getRawAxis(3), () -> -m_controller.getRawAxis(4));
   }
 }

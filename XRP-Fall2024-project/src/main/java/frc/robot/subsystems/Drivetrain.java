@@ -23,7 +23,9 @@ public class Drivetrain extends SubsystemBase {
   // channels 0 and 1 respectively
   private final XRPMotor m_leftMotor = new XRPMotor(0);
   private final XRPMotor m_rightMotor = new XRPMotor(1);
-
+  private double speed = 1.0;
+  private boolean leftInvert =  false;
+  private boolean rightInvert = false;
   // The XRP has onboard encoders that are hardcoded
   // to use DIO pins 4/5 and 6/7 for the left and right
   private final Encoder m_leftEncoder = new Encoder(4, 5);
@@ -60,8 +62,20 @@ public class Drivetrain extends SubsystemBase {
   }
   
   public void drive(double left, double right) {
-    m_rightMotor.set(right);
-    m_leftMotor.set(left);
+    m_rightMotor.set(-Math.min(right,0)*speed * (rightInvert?-1:1));
+    m_leftMotor.set(-Math.min(left,0)*speed * (rightInvert?-1:1));
+  }
+
+  public void speedToggle (double newSpeed) {
+    speed = newSpeed;
+  }
+
+  public void rightInvertion(){
+    rightInvert = !rightInvert;
+  }
+
+  public void leftInvertion(){
+    leftInvert = !leftInvert;
   }
 
   public void resetEncoders() {
