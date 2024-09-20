@@ -39,6 +39,7 @@ public class TurnDegrees extends Command {
   @Override
   public void execute() {
     m_drive.arcadeDrive(0, m_speed);
+    System.out.println(getAverageTurningDistance());
   }
 
   // Called once the command ends or is interrupted.

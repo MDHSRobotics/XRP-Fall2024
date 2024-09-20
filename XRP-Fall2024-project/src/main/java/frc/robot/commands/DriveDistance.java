@@ -38,6 +38,8 @@ public class DriveDistance extends Command {
   @Override
   public void execute() {
     m_drive.arcadeDrive(m_speed, 0);
+    System.out.println(m_drive.getRightDistanceInch());
+    System.out.println(m_drive.getLeftDistanceInch());
   }
 
   // Called once the command ends or is interrupted.
@@ -51,5 +53,6 @@ public class DriveDistance extends Command {
   public boolean isFinished() {
     // Compare distance travelled from start to desired distance
     return Math.abs(m_drive.getAverageDistanceInch()) >= m_distance;
+    
   }
 }
